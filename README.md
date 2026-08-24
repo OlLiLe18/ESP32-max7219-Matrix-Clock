@@ -26,7 +26,7 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 | **GPIO25** | **CS / LOAD** | Chip Select |
 
 ---
-Wenn dir dieses Projekt gefällt, unterstütze mich gerne mit einer kleinen Spende.
+Spende zur Unterstützung meiner Software-Entwicklung und Pflege von Open-Source-Projekten auf GitHub.
 [![PayPal Spendenseite](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
 
 ## 🚀 Einfache Installation mit dem ESPHome Device Builder
@@ -35,7 +35,7 @@ Dank der modernen ESPHome-Oberfläche in Home Assistant ist die Einrichtung in w
 
 ### 1. Schriftarten bereitstellen
 Lade die beiden Schriftdateien aus dem Ordner [`/fonts`](./fonts) herunter und lege sie in deinem Home Assistant Dateisystem unter folgendem Pfad ab:
-`/config/esphome/fonts/` (z. B. über das *File Editor*- oder *Samba Share*-Add-on).
+`/config/esphome/fonts/` (z. B. über das *File Editor*-, *Studio Code Server*- oder *Samba Share*-Add-on).
 - `basis33.ttf`
 - `pixelmix.ttf`
 
@@ -47,13 +47,20 @@ Lade die beiden Schriftdateien aus dem Ordner [`/fonts`](./fonts) herunter und l
    wifi_ssid: "DeinWLANName"
    wifi_password: "DeinWLANPasswort"
 
-### Neues Gerät anlegen und YAML-Code einfügen
+### 3. Neues Gerät anlegen und YAML-Code einfügen
 1. Klicke im ESPHome Dashboard unten rechts auf den blauen Button + Gerät erstellen (oder New Device).
 2. Klicke auf Weiter (Continue) Siehe Bild in "Konfiguration erstellen ESPHome Builder – Home Assistantund" gib als Gerätenamen genau ein: max7219-esp32-reg.
 3. Wähle als Plattform ESP32 aus.
 4. Klicke auf Fertigstellen (Skip / Finish).
 5. Es erscheint eine neue Karte für dein Gerät. Klicke auf der Karte auf Bearbeiten (Edit).
 6. Lösche den gesamten Standard-Code im Editor und füge den kompletten Inhalt der Datei max7219-esp32-reg.yaml ein.
-7. Nicht Vergessen passen sie die api / ota / ap an und Uperfrüfen sie es.
+7. Wichtig: Passe ggf. deine api- und ota-Schlüssel an bzw. überprüfe die Konfiguration.
 8. Optional anpassen: Suche die Zeile entity_id: sensor.aussenthermometer_temperature und trage dort den Namen deines eigenen Temperatursensors aus Home Assistant ein.
 9. Klicke oben rechts auf Speichern und anschließend auf Schließen
+
+### 4. Firmware installieren / flashen
+
+1. Klicke bei der neuen Gerätekarte auf das Drei-Punkte-Menü ⋮ Installieren.
+2. Wähle die gewünschte Installationsmethode:
+3. An diesen Computer angeschlossen: Für die Erstinstallation bequem per USB-Kabel direkt über den Browser flashen. [![web.esphome.io](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
+5. Im Netzwerk (OTA): Für alle späteren Updates kabellos über WLAN.

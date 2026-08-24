@@ -62,5 +62,5 @@ Lade die beiden Schriftdateien aus dem Ordner [`/fonts`](./fonts) herunter und l
 
 1. Klicke bei der neuen Gerätekarte auf das Drei-Punkte-Menü ⋮ Installieren.
 2. Wähle die gewünschte Installationsmethode:
-3. An diesen Computer angeschlossen: Für die Erstinstallation bequem per USB-Kabel direkt über den Browser flashen. [![web.esphome.io](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
+3. An diesen Computer angeschlossen: Für die Erstinstallation bequem per USB-Kabel direkt über den Browser flashen. [![web.esphome.io](https://shields.io)](https://web.esphome.io/)
 5. Im Netzwerk (OTA): Für alle späteren Updates kabellos über WLAN.

@@ -2,29 +2,58 @@
 
 Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollständig integriert in Home Assistant.
 
+---
+
 ## ✨ Features
-- ⏰ **Uhrzeit:** Große Ziffern mit fettem, blinkendem Doppelpunkt
-- 📅 **Datums-Einblendung:** Automatisch jede Minute für 5 Sekunden (Sekunde 50-55)
-- 🌡️ **Home Assistant Integration:** Live-Außentemperatur aus Home Assistant
-- 👾 **Expressiv- & Retro-Icons:** 8x8 Pixel-Art (Herzschlag, Pac-Man, Space Invader, etc.)
-- 🌙 **Automatischer Nachtmodus:** Einstellbare Dimm- und Abschaltzeiten über Home Assistant
-- 📜 **Lauftext-Modus:** Scroll-, Bounce- und Wipe-Animationen für individuelle Nachrichten
+
+- ⏰ **Große Uhrzeit:** Perfekt lesbare Zahlen mit fett gedoppeltem, blinkendem Doppelpunkt
+- 📅 **Datums-Einblendung:** Automatisch jede Minute für 5 Sekunden (Sekunde :50 bis :55) mit 📅-Icon
+- 🌡️ **Home Assistant Integration:** Live-Außentemperatur direkt aus Home Assistant
+- 👾 **Expressiv- & Retro-Icons:** 8x8 Pixel-Art Animationen (Pulsierendes Herz, Pac-Man, Space Invader, Kaffee mit Dampf, Sonne, etc.)
+- 🌙 **Automatischer Nachtmodus:** Einstellbare Start-/Endzeit und Dimmstufe (inkl. echtem Blanking/Abschalten bei Stufe 0)
+- 📜 **Lauftext-Modus:** Scroll-, Bounce- und Wipe-Animationen für individuelle Nachrichten aus Home Assistant
+
+---
 
 ## 🔌 Hardware & Pinbelegung (ESP32)
 
-| ESP32 Pin | MAX7219 Display |
-|---|---|
-| 5V / VIN | VCC |
-| GND | GND |
-| GPIO26 | CLK (Clock) |
-| GPIO27 | DIN / MOSI (Data) |
-| GPIO25 | CS / LOAD (Chip Select) |
+| ESP32 Pin | MAX7219 Display-Modul | Beschreibung |
+|---|---|---|
+| **5V / VIN** | **VCC** | 5V Stromversorgung |
+| **GND** | **GND** | Masse |
+| **GPIO26** | **CLK** | SPI Clock |
+| **GPIO27** | **DIN / MOSI** | SPI Datenleitung |
+| **GPIO25** | **CS / LOAD** | Chip Select |
 
+---
 Wenn dir dieses Projekt gefällt, unterstütze mich gerne mit einer kleinen Spende.
 [![PayPal Spendenseite](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
 
-## 🚀 Installation
-1. Klone dieses Repository oder lade die Dateien herunter.
-2. Kopiere die Schriftarten aus `/fonts` in deinen Home Assistant Ordner `/config/esphome/fonts/`.
-3. Benenne `secrets.example.yaml` in `secrets.yaml` um und trage dein WLAN-Passwort ein.
-4. Installiere die Konfiguration über das ESPHome Dashboard auf deinen ESP32.
+## 🚀 Einfache Installation mit dem ESPHome Device Builder
+
+Dank der modernen ESPHome-Oberfläche in Home Assistant ist die Einrichtung in wenigen Schritten erledigt:
+
+### 1. Schriftarten bereitstellen
+Lade die beiden Schriftdateien aus dem Ordner [`/fonts`](./fonts) herunter und lege sie in deinem Home Assistant Dateisystem unter folgendem Pfad ab:
+`/config/esphome/fonts/` (z. B. über das *File Editor*- oder *Samba Share*-Add-on).
+- `basis33.ttf`
+- `pixelmix.ttf`
+
+### 2. WLAN & Zugangsdaten eintragen (Secrets)
+1. Öffne das **ESPHome Dashboard** in Home Assistant.
+2. Klicke oben rechts auf das **Drei-Punkte-Menü `⋮`** $\rightarrow$ **`Secrets`**.
+3. Stelle sicher, dass deine WLAN-Zugangsdaten dort hinterlegt sind:
+   ```yaml
+   wifi_ssid: "DeinWLANName"
+   wifi_password: "DeinWLANPasswort"
+
+### Neues Gerät anlegen und YAML-Code einfügen
+1. Klicke im ESPHome Dashboard unten rechts auf den blauen Button + Gerät erstellen (oder New Device).
+2. Klicke auf Weiter (Continue) Siehe Bild in "Konfiguration erstellen ESPHome Builder – Home Assistantund" gib als Gerätenamen genau ein: max7219-esp32-reg.
+3. Wähle als Plattform ESP32 aus.
+4. Klicke auf Fertigstellen (Skip / Finish).
+5. Es erscheint eine neue Karte für dein Gerät. Klicke auf der Karte auf Bearbeiten (Edit).
+6. Lösche den gesamten Standard-Code im Editor und füge den kompletten Inhalt der Datei max7219-esp32-reg.yaml ein.
+7. Nicht Vergessen passen sie die api / ota / ap an und Uperfrüfen sie es.
+8. Optional anpassen: Suche die Zeile entity_id: sensor.aussenthermometer_temperature und trage dort den Namen deines eigenen Temperatursensors aus Home Assistant ein.
+9. Klicke oben rechts auf Speichern und anschließend auf Schließen

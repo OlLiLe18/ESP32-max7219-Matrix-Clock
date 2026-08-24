@@ -20,6 +20,9 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 | GPIO27 | DIN / MOSI (Data) |
 | GPIO25 | CS / LOAD (Chip Select) |
 
+Wenn dir dieses Projekt gefällt, unterstütze mich gerne mit einer kleinen Spende.
+[![PayPal Spendenseite](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
+
 ## 🚀 Installation
 1. Klone dieses Repository oder lade die Dateien herunter.
 2. Kopiere die Schriftarten aus `/fonts` in deinen Home Assistant Ordner `/config/esphome/fonts/`.

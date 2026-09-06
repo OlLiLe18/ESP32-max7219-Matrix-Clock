@@ -27,11 +27,7 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 | **GPIO25** | **CS / LOAD** | Chip Select |
 
 ---
-[
-  ![Donate with PayPal]
-  (https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png)
-]
-(https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QT54MSJR6QU7Y)
+[![Donate with PayPal](https://ibb.co)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
 
 Spende zur Unterstützung meiner Software-Entwicklung und Pflege von Open-Source-Projekten auf GitHub.
 [![PayPal Spendenseite](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)

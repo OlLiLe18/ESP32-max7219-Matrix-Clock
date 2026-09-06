@@ -28,7 +28,7 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 
 ---
 ☕Spende zur Unterstützung meiner Software-Entwicklung und Pflege von Open-Source-Projekten auf GitHub.
-    [![PayPal Spendenseite](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
+-- [![PayPal Spendenseite](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW) --
 
 ## 🚀 Einfache Installation mit dem ESPHome Device Builder
 

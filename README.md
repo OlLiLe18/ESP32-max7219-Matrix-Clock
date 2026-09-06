@@ -27,17 +27,8 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 | **GPIO25** | **CS / LOAD** | Chip Select |
 
 ---
-☕ Spende zur Unterstützung meiner Software-Entwicklung und Pflege von Open-Source-Projekten auf GitHub.
-
-<p align="center">
-  <a href="https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW">
-    <img src="https://ibb.co" alt="Donate with PayPal" width="500">
-  </a>
-</p>
-
-
-Spende zur Unterstützung meiner Software-Entwicklung und Pflege von Open-Source-Projekten auf GitHub.
-[![PayPal Spendenseite](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
+☕Spende zur Unterstützung meiner Software-Entwicklung und Pflege von Open-Source-Projekten auf GitHub.
+    [![PayPal Spendenseite](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
 
 ## 🚀 Einfache Installation mit dem ESPHome Device Builder
 

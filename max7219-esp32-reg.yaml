@@ -3,6 +3,7 @@
 #  - Datums-Einblendung: Jede Minute für 5 Sek. (Sekunde 50 bis 55) mit 📅-Icon
 #  - Doppelpunkt: Original-Doppeldruck bei X=21 & X=22 (fett & leuchtstark)
 #  - Icons: Kontraststarke 8x8 Retro- & Expressiv-Grafiken bei X=87
+#  - Helligkeit: Sofortige Aktualisierung bei Regleränderung in Home Assistant
 #  - Framework: Arduino (100% fehlerfrei)
 ################################################################################
 
@@ -76,6 +77,11 @@ globals:
     type: bool
     initial_value: 'false'
 
+  # Hält die aktuell an die Hardware gesendete Helligkeit
+  - id: current_applied_intensity
+    type: int
+    initial_value: '-1'
+
 ################################################################################
 #  Auswahl-Menüs
 ################################################################################
@@ -134,7 +140,7 @@ text:
           id(text_anim_dir) = 1;
 
 ################################################################################
-#  Helligkeitsregelung (Stufen 0 bis 15)
+#  Helligkeitsregelung (Stufen 0 bis 15) mit Sofort-Aktualisierung
 ################################################################################
 number:
   - platform: template
@@ -146,6 +152,13 @@ number:
     initial_value: 3
     optimistic: true
     restore_value: true
+    on_value:
+      then:
+        lambda: |-
+          // Sofort an alle MAX7219 Chips senden, wenn kein Nachtmodus aktiv ist
+          if (id(display_power).state) {
+            id(max_display).set_intensity((uint8_t)x);
+          }
 
   - platform: template
     name: "Night Mode Brightness"
@@ -153,9 +166,14 @@ number:
     min_value: 0
     max_value: 15
     step: 1
-    initial_value: 1
+    initial_value: 0
     optimistic: true
     restore_value: true
+    on_value:
+      then:
+        lambda: |-
+          // Triggert sofort ein Neu-Rendern
+          id(max_display).update();
 
 ################################################################################
 #  Schalter
@@ -166,6 +184,14 @@ switch:
     id: display_power
     optimistic: true
     restore_mode: RESTORE_DEFAULT_ON
+    on_turn_on:
+      then:
+        lambda: |-
+          id(max_display).set_intensity((uint8_t)id(display_brightness).state);
+    on_turn_off:
+      then:
+        lambda: |-
+          id(max_display).set_intensity(0);
 
   - platform: template
     name: "Night Mode Active"
@@ -238,7 +264,7 @@ display:
     cs_pin: GPIO25
     num_chips: 12
     intensity: 3
-    update_interval: 50ms   # 20 FPS für absolut flüssige Bewegungen
+    update_interval: 50ms
 
     lambda: |-
       id(anim_frame)++;
@@ -261,13 +287,22 @@ display:
 
       // Display AUS: Puffer leeren & Intensity 0
       if (!id(display_power).state || (is_night && (int)id(night_brightness).state == 0)) {
+        if (id(current_applied_intensity) != 0) {
+          it.set_intensity(0);
+          id(current_applied_intensity) = 0;
+        }
         it.fill(COLOR_OFF);
-        it.intensity(0);
         return;
       }
 
+      // Zielhelligkeit berechnen
       int target_brightness = is_night ? (int)id(night_brightness).state : (int)id(display_brightness).state;
-      it.intensity(target_brightness);
+      
+      // Nur per SPI senden, wenn sich die Helligkeit geändert hat!
+      if (id(current_applied_intensity) != target_brightness) {
+        it.set_intensity(target_brightness);
+        id(current_applied_intensity) = target_brightness;
+      }
 
       const int W = it.get_width();   // 96 Pixel
       const int H = it.get_height();  // 8 Pixel

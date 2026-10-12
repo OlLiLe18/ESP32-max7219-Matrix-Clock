@@ -29,9 +29,8 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 ---
 ☕Spende zur Unterstützung meiner Software-Entwicklung und Pflege von Open-Source-Projekten auf GitHub.
 
-[![Buy Me A Coffee](https://shields.io)](https://www.paypal.c​om/paypalme/Oli08272​8)
+[![🍺 Buy me a Beer](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
 
-[![Buy Me A Coffee](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
 
 
 [![Buy Me A Coffee](https://buymeacoffee.com)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)

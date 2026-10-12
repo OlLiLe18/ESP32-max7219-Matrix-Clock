@@ -32,7 +32,8 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 [![Buy Me A Coffee](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
 
 
-[![Buy Me A Coffee](https://shields.io)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
+[![Buy Me A Coffee](https://buymeacoffee.com)](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW)
+
 
 ## 🚀 Einfache Installation mit dem ESPHome Device Builder
 

@@ -27,17 +27,10 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 | **GPIO25** | **CS / LOAD** | Chip Select |
 
 ---
-☕Spende zur Unterstützung meiner Software-Entwicklung und Pflege von Open-Source-Projekten auf GitHub.
-
-[**☕ Spende mir ein Coffee via PayPal**](HIER_DEIN_PAYPAL_LINK)
-
-
-
----
 
 <p align="center">
   <strong>💖 Dir gefällt mein Projekt?</strong><br><br>
-  <a href="https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW"><strong>🍺 Spende mir ein Bier via PayPal</strong></a>
+  <a href="https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW"><strong>☕ Spende mir ein Kaffee via PayPal</strong></a>
 </p>
 
 ---

@@ -2,7 +2,7 @@
 
 A smart 96×8 LED matrix clock built with an ESP32 and ESPHome, fully integrated with Home Assistant.
 
-This is an English documentation fork of [OlLiLe18's original project](https://github.com/OlLiLe18/ESP32-max7219-Matrix-Clock). The README and configuration comments have been translated; the firmware settings and display behaviour are unchanged.
+This is an English documentation fork of [OlLiLe18's original project](https://github.com/OlLiLe18/ESP32-max7219-Matrix-Clock). The README and configuration comments are in English. The configuration includes the ESPHome compatibility and display fixes described in the [validation notes](./ESPHOME_VALIDATION.md).
 
 ![ESP32 MAX7219 matrix clock](<Clock max7219 (2).png>)
 
@@ -21,7 +21,7 @@ This is an English documentation fork of [OlLiLe18's original project](https://g
 
 ## 🔌 Hardware and ESP32 Pin Connections
 
-The display uses a chain of 12 MAX7219 8×8 modules, giving a total resolution of 96×8 pixels.
+The display uses a chain of 12 MAX7219 8×8 modules, giving a total resolution of 96×8 pixels. Use a regulated 5 V supply sized for the display chain and share ground with the ESP32. Confirm the modules' logic-level requirements when wiring the hardware.
 
 | ESP32 pin  | MAX7219 display module | Description      |
 | ---------- | ---------------------- | ---------------- |
@@ -49,24 +49,15 @@ Download `basis33.ttf` and `pixelmix.ttf` from the [`fonts/`](./fonts/) director
 
 ### 2. Set Up Wi-Fi and Credentials
 
-1. Open the **ESPHome dashboard** in Home Assistant.
-2. Open the three-dot menu **⋮** at the top right and select **Secrets**.
-3. Store your Wi-Fi credentials in `secrets.yaml`:
+Copy [`secrets.example.yaml`](./secrets.example.yaml) to `secrets.yaml` beside the device YAML and replace every example value. If you already have a shared `secrets.yaml` in Home Assistant, merge these entries into it instead of replacing the file. In the ESPHome dashboard, use the three-dot menu **⋮** → **Secrets** to edit that file.
 
-    ```yaml
-    wifi_ssid: "YourWiFiName"
-    wifi_password: "YourWiFiPassword"
-    ```
+Set `wifi_ssid`, `wifi_password`, `api_encryption_key`, `ota_password`, and `fallback_ap_password`. Generate a unique API encryption key using:
 
-The supplied firmware YAML currently uses inline placeholders. To use the Wi-Fi secrets above, replace its `wifi.ssid` and `wifi.password` values with:
-
-```yaml
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
+```sh
+openssl rand -base64 32
 ```
 
-The file [`secrets.example.yaml`](./secrets.example.yaml) contains example ESPHome configuration sections with placeholder credentials. It is a configuration reference; the entries shown in the first example above are the key/value format used by `secrets.yaml`.
+The device YAML reads these values using `!secret`. Keep `secrets.yaml` private; it is excluded from Git. The API key example intentionally requires replacement before validation or installation.
 
 ### 3. Create the Device and Paste the YAML
 
@@ -76,14 +67,33 @@ The file [`secrets.example.yaml`](./secrets.example.yaml) contains example ESPHo
 4. Complete the wizard using **Skip** or **Finish**, as appropriate.
 5. Find the new device card and click **Edit**.
 6. Replace the generated configuration with the complete contents of [`max7219-esp32-reg.yaml`](./max7219-esp32-reg.yaml).
-7. Replace `DEIN_API_KEY` with your valid ESPHome API encryption key and `DEIN_OTA_PASSWORT` with your OTA password. Set the Wi-Fi credentials directly or use the `!secret` references described above, and choose a secure fallback hotspot password under `wifi.ap.password`.
+7. Confirm that the credentials from step 2 are present in the ESPHome `secrets.yaml` file. Keep the `!secret` references in the device configuration.
 8. Find `entity_id: sensor.aussenthermometer_temperature` and replace the entity ID with your own Home Assistant temperature sensor.
 9. Review the configuration, then click **Save** and **Close**.
 
-The original configuration uses the `Europe/Berlin` time zone and German weekday abbreviations (`SO`, `MO`, `DI`, `MI`, `DO`, `FR`, `SA`). Change the `time.timezone` value if needed for your location; the documentation translation retains these original firmware defaults.
+The configuration retains the original `Europe/Berlin` time zone and German weekday abbreviations (`SO`, `MO`, `DI`, `MI`, `DO`, `FR`, `SA`). Set the `timezone` entry under `time` to your location, for example `Australia/Sydney`, before installation.
 
 ### 4. Install the Firmware
 
 Open the new device card's three-dot menu **⋮** and select **Install**. Choose **Plug into this computer** for the first installation over USB, or **Wirelessly** / **Over the air (OTA)** for later updates over Wi-Fi.
 
 For browser-based USB flashing, use [ESPHome Web](https://web.esphome.io/).
+
+---
+
+## ESPHome Verification
+
+See [the validation notes](./ESPHOME_VALIDATION.md) for the tested ESPHome version, fixes, software checks, and the checks that still need physical hardware.
+
+To validate and compile after entering your own credentials:
+
+```sh
+esphome config max7219-esp32-reg.yaml
+esphome compile max7219-esp32-reg.yaml
+```
+
+To run the display logic checks on a computer with Python 3 and `clang++` or `g++`:
+
+```sh
+python3 scripts/check_display_logic.py
+```

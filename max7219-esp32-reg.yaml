@@ -3,7 +3,7 @@
 #  - Date display: every minute at seconds 50 to 55 with a 📅 icon
 #  - Colon: original double drawing at X=21 & X=22 (bold & bright)
 #  - Icons: high-contrast 8x8 retro & expressive graphics at X=87
-#  - Brightness: updates immediately when the Home Assistant slider changes
+#  - Brightness: applies Home Assistant changes on the next 50 ms frame
 #  - Framework: Arduino
 ################################################################################
 
@@ -140,7 +140,7 @@ text:
           id(text_anim_dir) = 1;
 
 ################################################################################
-#  Brightness control (levels 0 to 15) with immediate updates
+#  Brightness control (levels 0 to 15), applied by the display lambda
 ################################################################################
 number:
   - platform: template
@@ -152,13 +152,6 @@ number:
     initial_value: 3
     optimistic: true
     restore_value: true
-    on_value:
-      then:
-        lambda: |-
-          // Send immediately to all MAX7219 chips when night mode is inactive
-          if (id(display_power).state) {
-            id(max_display).set_intensity((uint8_t)x);
-          }
 
   - platform: template
     name: "Night Mode Brightness"
@@ -169,11 +162,6 @@ number:
     initial_value: 0
     optimistic: true
     restore_value: true
-    on_value:
-      then:
-        lambda: |-
-          // Trigger an immediate display redraw
-          id(max_display).update();
 
 ################################################################################
 #  Switches
@@ -184,14 +172,6 @@ switch:
     id: display_power
     optimistic: true
     restore_mode: RESTORE_DEFAULT_ON
-    on_turn_on:
-      then:
-        lambda: |-
-          id(max_display).set_intensity((uint8_t)id(display_brightness).state);
-    on_turn_off:
-      then:
-        lambda: |-
-          id(max_display).set_intensity(0);
 
   - platform: template
     name: "Night Mode Active"
@@ -264,6 +244,8 @@ display:
     cs_pin: GPIO25
     num_chips: 12
     intensity: 3
+    # Animations are handled by the lambda; disable driver auto-scrolling.
+    scroll_enable: false
     update_interval: 50ms
 
     lambda: |-
@@ -288,7 +270,7 @@ display:
       // Display OFF: clear the buffer & set intensity to 0
       if (!id(display_power).state || (is_night && (int)id(night_brightness).state == 0)) {
         if (id(current_applied_intensity) != 0) {
-          it.set_intensity(0);
+          it.intensity(0);
           id(current_applied_intensity) = 0;
         }
         it.fill(COLOR_OFF);
@@ -300,7 +282,7 @@ display:
       
       // Send over SPI only when the brightness has changed!
       if (id(current_applied_intensity) != target_brightness) {
-        it.set_intensity(target_brightness);
+        it.intensity(target_brightness);
         id(current_applied_intensity) = target_brightness;
       }
 
@@ -407,7 +389,7 @@ display:
         }
 
         // Temperature at X=64
-        if (id(temp_sensor).has_state()) {
+        if (id(temp_sensor).has_state() && std::isfinite(id(temp_sensor).state)) {
           it.printf(64, 0, id(font_pixelmix), TextAlign::TOP_CENTER, "%.1f°", id(temp_sensor).state);
         } else {
           it.print(64, 0, id(font_pixelmix), TextAlign::TOP_CENTER, "--.-°");
@@ -473,22 +455,23 @@ display:
 ############################################################
 api:
   encryption:
-    # Check or replace the credential
-    key: "DEIN_API_KEY"
+    # Unique API key stored in secrets.yaml
+    key: !secret api_encryption_key
 
 ota:
   - platform: esphome
-    # Check or replace the credential
-    password: "DEIN_OTA_PASSWORT"
+    # OTA password stored in secrets.yaml
+    password: !secret ota_password
 
 
 wifi:
-  ssid: "DEIN_WLAN_NAME"
-  password: "DEIN_WLAN_PASSWORT"
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
 
   # Enable the fallback hotspot (captive portal) if the Wi-Fi connection fails
   ap:
     ssid: "Max7219-Esp32-Reg"
     # Choose a secure password
-    password: "du bist Bereit"
-    captive_portal:
+    password: !secret fallback_ap_password
+
+captive_portal:

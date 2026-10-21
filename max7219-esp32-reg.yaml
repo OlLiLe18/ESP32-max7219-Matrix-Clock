@@ -1,10 +1,10 @@
 ################################################################################
-#  MAX7219 ESP32 Matrix-Display (12er Kette = 96x8 Pixel)
-#  - Datums-Einblendung: Jede Minute für 5 Sek. (Sekunde 50 bis 55) mit 📅-Icon
-#  - Doppelpunkt: Original-Doppeldruck bei X=21 & X=22 (fett & leuchtstark)
-#  - Icons: Kontraststarke 8x8 Retro- & Expressiv-Grafiken bei X=87
-#  - Helligkeit: Sofortige Aktualisierung bei Regleränderung in Home Assistant
-#  - Framework: Arduino (100% fehlerfrei)
+#  MAX7219 ESP32 matrix display (12-module chain = 96x8 pixels)
+#  - Date display: every minute at seconds 50 to 55 with a 📅 icon
+#  - Colon: original double drawing at X=21 & X=22 (bold & bright)
+#  - Icons: high-contrast 8x8 retro & expressive graphics at X=87
+#  - Brightness: updates immediately when the Home Assistant slider changes
+#  - Framework: Arduino
 ################################################################################
 
 esphome:
@@ -23,7 +23,7 @@ logger:
   level: INFO
 
 ################################################################################
-#  Zeitsteuerung: Nachtmodus
+#  Scheduling: night mode
 ################################################################################
 datetime:
   - platform: template
@@ -43,47 +43,47 @@ datetime:
     restore_value: true
 
 ################################################################################
-#  Globale Variablen
+#  Global variables
 ################################################################################
 globals:
-  # Zeitsynchronisation erfolgreich?
+  # Time synchronisation successful?
   - id: time_sync_done
     type: bool
     restore_value: true
     initial_value: 'false'
 
-  # Frame-Zähler für flüssige 20 FPS
+  # Frame counter for smooth animation at 20 FPS
   - id: anim_frame
     type: uint32_t
     initial_value: '0'
 
-  # Lauftext-Position
+  # Scrolling text position
   - id: text_anim_pos
     type: int
     initial_value: '0'
 
-  # Bounce-Richtung
+  # Bounce direction
   - id: text_anim_dir
     type: int
     initial_value: '1'
 
-  # Aktuelles Icon-Motiv (0 bis 6)
+  # Current icon design (0 to 6)
   - id: active_smiley
     type: int
     initial_value: '0'
 
-  # 2-Frame Animations-Umschalter (Herzschlag, Pacman etc.)
+  # Two-frame animation toggle (heartbeat, Pac-Man, etc.)
   - id: icon_anim_phase
     type: bool
     initial_value: 'false'
 
-  # Hält die aktuell an die Hardware gesendete Helligkeit
+  # Stores the brightness currently applied to the hardware
   - id: current_applied_intensity
     type: int
     initial_value: '-1'
 
 ################################################################################
-#  Auswahl-Menüs
+#  Selection menus
 ################################################################################
 select:
   - platform: template
@@ -109,7 +109,7 @@ select:
     restore_value: true
 
 ################################################################################
-#  Zeitsynchronisation (SNTP)
+#  Time synchronisation (SNTP)
 ################################################################################
 time:
   - platform: sntp
@@ -121,7 +121,7 @@ time:
           id(time_sync_done) = true;
 
 ################################################################################
-#  Texteingabe
+#  Text input
 ################################################################################
 text:
   - platform: template
@@ -140,7 +140,7 @@ text:
           id(text_anim_dir) = 1;
 
 ################################################################################
-#  Helligkeitsregelung (Stufen 0 bis 15) mit Sofort-Aktualisierung
+#  Brightness control (levels 0 to 15) with immediate updates
 ################################################################################
 number:
   - platform: template
@@ -155,7 +155,7 @@ number:
     on_value:
       then:
         lambda: |-
-          // Sofort an alle MAX7219 Chips senden, wenn kein Nachtmodus aktiv ist
+          // Send immediately to all MAX7219 chips when night mode is inactive
           if (id(display_power).state) {
             id(max_display).set_intensity((uint8_t)x);
           }
@@ -172,11 +172,11 @@ number:
     on_value:
       then:
         lambda: |-
-          // Triggert sofort ein Neu-Rendern
+          // Trigger an immediate display redraw
           id(max_display).update();
 
 ################################################################################
-#  Schalter
+#  Switches
 ################################################################################
 switch:
   - platform: template
@@ -206,7 +206,7 @@ switch:
     restore_mode: RESTORE_DEFAULT_ON
 
 ################################################################################
-#  Schriftarten (/config/esphome/fonts/)
+#  Fonts (/config/esphome/fonts/)
 ################################################################################
 font:
   - file: "fonts/basis33.ttf"
@@ -225,7 +225,7 @@ font:
     glyphs: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÄÖÜäöüß0123456789!#$%&'()*+,-./:;<=>?@[]^_{|}° "
 
 ################################################################################
-#  Home Assistant Temperatur-Sensor
+#  Home Assistant temperature sensor
 ################################################################################
 sensor:
   - platform: homeassistant
@@ -233,30 +233,30 @@ sensor:
     entity_id: sensor.aussenthermometer_temperature
 
 ################################################################################
-#  Intervalle
+#  Intervals
 ################################################################################
 interval:
-  # Alle 12 Sekunden ein neues Motiv
+  # Choose a new design every 12 seconds
   - interval: 12s
     then:
       lambda: |-
         id(active_smiley) = random() % 7;
 
-  # Schaltet alle 500ms die Animationsphase um (z. B. Herz schlägt / Pacman kaut)
+  # Toggle the animation phase every 500 ms (e.g. heartbeat / Pac-Man chewing)
   - interval: 500ms
     then:
       lambda: |-
         id(icon_anim_phase) = !id(icon_anim_phase);
 
 ################################################################################
-#  SPI-Verbindung
+#  SPI connection
 ################################################################################
 spi:
   clk_pin: GPIO26
   mosi_pin: GPIO27
 
 ################################################################################
-#  Display: 12 Module (96x8) mit 20 FPS Rendering
+#  Display: 12 modules (96x8) rendered at 20 FPS
 ################################################################################
 display:
   - platform: max7219digit
@@ -269,7 +269,7 @@ display:
     lambda: |-
       id(anim_frame)++;
 
-      // 1. NACHTMODUS- & POWER-STEUERUNG
+      // 1. NIGHT MODE & POWER CONTROL
       bool is_night = false;
       auto now = id(sntp_time).now();
 
@@ -285,7 +285,7 @@ display:
           : (cur_min >= s_min && cur_min < e_min);
       }
 
-      // Display AUS: Puffer leeren & Intensity 0
+      // Display OFF: clear the buffer & set intensity to 0
       if (!id(display_power).state || (is_night && (int)id(night_brightness).state == 0)) {
         if (id(current_applied_intensity) != 0) {
           it.set_intensity(0);
@@ -295,20 +295,20 @@ display:
         return;
       }
 
-      // Zielhelligkeit berechnen
+      // Calculate the target brightness
       int target_brightness = is_night ? (int)id(night_brightness).state : (int)id(display_brightness).state;
       
-      // Nur per SPI senden, wenn sich die Helligkeit geändert hat!
+      // Send over SPI only when the brightness has changed!
       if (id(current_applied_intensity) != target_brightness) {
         it.set_intensity(target_brightness);
         id(current_applied_intensity) = target_brightness;
       }
 
-      const int W = it.get_width();   // 96 Pixel
-      const int H = it.get_height();  // 8 Pixel
+      const int W = it.get_width();   // 96 pixels
+      const int H = it.get_height();  // 8 pixels
 
       // =======================================================================
-      // 2. TEXT-SEITE
+      // 2. TEXT PAGE
       // =======================================================================
       if (id(display_page).current_option() == "Text") {
         const char* text_str = id(display_text).state.c_str();
@@ -366,24 +366,24 @@ display:
       }
 
       // =======================================================================
-      // 3. UHRZEIT- & STATUS-SEITE (CLOCK)
+      // 3. TIME & STATUS PAGE (CLOCK)
       // =======================================================================
       if (!id(time_sync_done) || !now.is_valid()) {
         it.print(W / 2, 0, id(font_pixelmix), TextAlign::TOP_CENTER, "SYNC...");
         return;
       }
 
-      // Datums-Einblendung jede Minute bei Sekunde :50 bis :55
+      // Show the date every minute at seconds :50 to :55
       bool show_date = id(show_date_enabled).state && (now.second >= 50 && now.second <= 55);
 
       if (show_date) {
-        // 3.A DATUM-ANZEIGE (z. B. "SO 23.08.")
+        // 3.A DATE DISPLAY (e.g. "SO 23.08.", using German weekday abbreviations)
         static const char* const WAYS[7] = { "SO", "MO", "DI", "MI", "DO", "FR", "SA" };
         int wday_idx = (now.day_of_week - 1 + 7) % 7;
 
         it.printf(4, 0, id(font_pixelmix), TextAlign::TOP_LEFT, "%s %02d.%02d.", WAYS[wday_idx], now.day_of_month, now.month);
 
-        // Animiertes Kalender-Icon 📅 ganz rechts bei X=87
+        // Animated calendar icon 📅 at the far right, X=87
         static const uint8_t CAL_ICON[2][8] = {
           { 0b01100110, 0b11111111, 0b10000001, 0b10111101, 0b10111101, 0b10111101, 0b10000001, 0b11111111 },
           { 0b01100110, 0b11111111, 0b10000001, 0b10000001, 0b10111101, 0b10111101, 0b10000001, 0b11111111 }
@@ -396,31 +396,31 @@ display:
           }
         }
       } else {
-        // 3.B NORMALE UHRZEIT: Stunden bei X=8, Minuten bei X=28
+        // 3.B NORMAL TIME DISPLAY: hours at X=8, minutes at X=28
         it.printf(8, 5, id(digit_font_basis), TextAlign::CENTER_LEFT, "%02d", now.hour);
         it.printf(28, 5, id(digit_font_basis), TextAlign::CENTER_LEFT, "%02d", now.minute);
 
-        // Doppelpunkt fett gedoppelt bei X=21 und X=22
+        // Draw the colon twice at X=21 and X=22 for a bold appearance
         if (now.second % 2 == 1) {
           it.print(21, -4, id(digit_font_basis15), ":");
           it.print(22, -4, id(digit_font_basis15), ":");
         }
 
-        // Temperatur bei X=64
+        // Temperature at X=64
         if (id(temp_sensor).has_state()) {
           it.printf(64, 0, id(font_pixelmix), TextAlign::TOP_CENTER, "%.1f°", id(temp_sensor).state);
         } else {
           it.print(64, 0, id(font_pixelmix), TextAlign::TOP_CENTER, "--.-°");
         }
 
-        // 8x8 Expressiv-Icons ganz rechts (X=87 bis 94)
+        // 8x8 expressive icons at the far right (X=87 to 94)
         static const uint8_t ICONS[7][2][8] = {
-          // 0: Anime-Augen (^  ^)
+          // 0: Anime eyes (^  ^)
           {
             { 0b00000000, 0b01100110, 0b10011001, 0b00000000, 0b10000001, 0b01000010, 0b00111100, 0b00000000 },
             { 0b00000000, 0b00000000, 0b11111111, 0b00000000, 0b10000001, 0b01111110, 0b00111100, 0b00000000 }
           },
-          // 1: Pulsierendes Herz
+          // 1: Pulsing heart
           {
             { 0b01100110, 0b11111111, 0b11111111, 0b11111111, 0b01111110, 0b00111100, 0b00011000, 0b00000000 },
             { 0b00000000, 0b01100110, 0b01111110, 0b00111100, 0b00011000, 0b00000000, 0b00000000, 0b00000000 }
@@ -435,17 +435,17 @@ display:
             { 0b00011000, 0b00111100, 0b01111110, 0b11011011, 0b11111111, 0b00100100, 0b01011010, 0b10100101 },
             { 0b00011000, 0b00111100, 0b01111110, 0b11011011, 0b11111111, 0b01011010, 0b10000001, 0b01000010 }
           },
-          // 4: Coole Sonnenbrille
+          // 4: Cool sunglasses
           {
             { 0b00000000, 0b11111111, 0b11101110, 0b11001100, 0b01100110, 0b00000000, 0b01111110, 0b00000000 },
             { 0b00000000, 0b11111111, 0b11101110, 0b11001100, 0b01100110, 0b00000000, 0b00111100, 0b00000000 }
           },
-          // 5: Kaffeetasse mit Dampf
+          // 5: Steaming coffee cup
           {
             { 0b00100100, 0b01001000, 0b00100100, 0b11111100, 0b10000110, 0b10000110, 0b01111100, 0b00111000 },
             { 0b01001000, 0b00100100, 0b01001000, 0b11111100, 0b10000110, 0b10000110, 0b01111100, 0b00111000 }
           },
-          // 6: Scheinende Sonne
+          // 6: Shining sun
           {
             { 0b00100100, 0b10000001, 0b00111100, 0b01111110, 0b01111110, 0b00111100, 0b10000001, 0b00100100 },
             { 0b00011000, 0b01000010, 0b00111100, 0b10111101, 0b10111101, 0b00111100, 0b01000010, 0b00011000 }
@@ -469,16 +469,16 @@ display:
       }
 
 ############################################################
-#  API + OTA + WLAN
+#  API + OTA + Wi-Fi
 ############################################################
 api:
   encryption:
-    #secret anpassen/prüfen
+    # Check or replace the credential
     key: "DEIN_API_KEY"
 
 ota:
   - platform: esphome
-    #secret anpassen/prüfen
+    # Check or replace the credential
     password: "DEIN_OTA_PASSWORT"
 
 
@@ -486,9 +486,9 @@ wifi:
   ssid: "DEIN_WLAN_NAME"
   password: "DEIN_WLAN_PASSWORT"
 
-  # Aktiviere den Fallback-Hotspot (Captive Portal), falls die WLAN-Verbindung fehlschlägt
+  # Enable the fallback hotspot (captive portal) if the Wi-Fi connection fails
   ap:
     ssid: "Max7219-Esp32-Reg"
-    #gerne ein sicheres Passwort wählen
+    # Choose a secure password
     password: "du bist Bereit"
     captive_portal:

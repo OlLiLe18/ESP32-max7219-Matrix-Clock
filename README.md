@@ -1,73 +1,89 @@
-# 🕒 ESP32 MAX7219 Smart Matrix Clock (96x8 Pixel)
+# 🕒 ESP32 MAX7219 Smart Matrix Clock (96×8 Pixels)
 
-Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollständig integriert in Home Assistant.
+A smart 96×8 LED matrix clock built with an ESP32 and ESPHome, fully integrated with Home Assistant.
+
+This is an English documentation fork of [OlLiLe18's original project](https://github.com/OlLiLe18/ESP32-max7219-Matrix-Clock). The README and configuration comments have been translated; the firmware settings and display behaviour are unchanged.
+
+![ESP32 MAX7219 matrix clock](<Clock max7219 (2).png>)
 
 ---
-<img width="1195" height="896" alt="Clock max7219 (1)" src="https://github.com/user-attachments/assets/46acfe09-3d6f-4676-9f4f-9e3fb7cb2ba8" />
 
 ## ✨ Features
 
-- ⏰ **Große Uhrzeit:** Perfekt lesbare Zahlen mit fett gedoppeltem, blinkendem Doppelpunkt
-- 📅 **Datums-Einblendung:** Automatisch jede Minute für 5 Sekunden (Sekunde :50 bis :55) mit 📅-Icon
-- 🌡️ **Home Assistant Integration:** Live-Außentemperatur direkt aus Home Assistant
-- 👾 **Expressiv- & Retro-Icons:** 8x8 Pixel-Art Animationen (Pulsierendes Herz, Pac-Man, Space Invader, Kaffee mit Dampf, Sonne, etc.)
-- 🌙 **Automatischer Nachtmodus:** Einstellbare Start-/Endzeit und Dimmstufe (inkl. echtem Blanking/Abschalten bei Stufe 0)
-- 📜 **Lauftext-Modus:** Scroll-, Bounce- und Wipe-Animationen für individuelle Nachrichten aus Home Assistant
+- ⏰ **Large time display:** Easy-to-read digits with a bold, double-drawn blinking colon.
+- 📅 **Date display:** Automatically shows the date with a calendar icon at seconds `:50`–`:55` of each minute.
+- 🌡️ **Home Assistant integration:** Displays live outdoor temperature from a Home Assistant sensor.
+- 👾 **Expressive and retro icons:** Animated 8×8 pixel art, including a pulsing heart, Pac-Man, Space Invader, steaming coffee cup, and sun.
+- 🌙 **Automatic night mode:** Adjustable start and end times and brightness, including a blank display at night brightness `0`.
+- 📜 **Scrolling text mode:** Scroll, Bounce, and Wipe animations for custom messages from Home Assistant.
 
 ---
 
-## 🔌 Hardware & Pinbelegung (ESP32)
+## 🔌 Hardware and ESP32 Pin Connections
 
-| ESP32 Pin | MAX7219 Display-Modul | Beschreibung |
-|---|---|---|
-| **5V / VIN** | **VCC** | 5V Stromversorgung |
-| **GND** | **GND** | Masse |
-| **GPIO26** | **CLK** | SPI Clock |
-| **GPIO27** | **DIN / MOSI** | SPI Datenleitung |
-| **GPIO25** | **CS / LOAD** | Chip Select |
+The display uses a chain of 12 MAX7219 8×8 modules, giving a total resolution of 96×8 pixels.
 
----
-
-<p align="center">
-  <strong>💖 Dir gefällt mein Projekt?</strong><br><br>
-  <a href="https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW"><strong>☕ Spende mir ein Kaffee via PayPal</strong></a>
-</p>
+| ESP32 pin  | MAX7219 display module | Description      |
+| ---------- | ---------------------- | ---------------- |
+| `5V / VIN` | `VCC`                  | 5 V power supply |
+| `GND`      | `GND`                  | Ground           |
+| `GPIO26`   | `CLK`                  | SPI clock        |
+| `GPIO27`   | `DIN / MOSI`           | SPI data         |
+| `GPIO25`   | `CS / LOAD`            | Chip select      |
 
 ---
 
+## 💖 Support the Original Author
 
-## 🚀 Einfache Installation mit dem ESPHome Device Builder
+Enjoying the project? [Buy the original author, OlLiLe18, a coffee via PayPal](https://www.paypal.com/donate/?hosted_button_id=R3GX3HE8RF4LW).
 
-Dank der modernen ESPHome-Oberfläche in Home Assistant ist die Einrichtung in wenigen Schritten erledigt:
+---
 
-### 1. Schriftarten bereitstellen
-Lade die beiden Schriftdateien aus dem Ordner [`/fonts`](./fonts) herunter und lege sie in deinem Home Assistant Dateisystem unter folgendem Pfad ab:
-`/config/esphome/fonts/` (z. B. über das *File Editor*-, *Studio Code Server*- oder *Samba Share*-Add-on).
-- `basis33.ttf`
-- `pixelmix.ttf`
+## 🚀 Installation with ESPHome Device Builder
 
-### 2. WLAN & Zugangsdaten eintragen (Secrets)
-1. Öffne das **ESPHome Dashboard** in Home Assistant.
-2. Klicke oben rechts auf das **Drei-Punkte-Menü `⋮`** $\rightarrow$ **`Secrets`**.
-3. Stelle sicher, dass deine WLAN-Zugangsdaten dort hinterlegt sind:
-   ```yaml
-   wifi_ssid: "DeinWLANName"
-   wifi_password: "DeinWLANPasswort"
+Use the ESPHome dashboard in Home Assistant to set up the clock.
 
-### 3. Neues Gerät anlegen und YAML-Code einfügen
-1. Klicke im ESPHome Dashboard unten rechts auf den blauen Button + Gerät erstellen (oder New Device).
-2. Klicke auf Weiter (Continue) Siehe Bild in "Konfiguration erstellen ESPHome Builder – Home Assistantund" gib als Gerätenamen genau ein: max7219-esp32-reg.
-3. Wähle als Plattform ESP32 aus.
-4. Klicke auf Fertigstellen (Skip / Finish).
-5. Es erscheint eine neue Karte für dein Gerät. Klicke auf der Karte auf Bearbeiten (Edit).
-6. Lösche den gesamten Standard-Code im Editor und füge den kompletten Inhalt der Datei max7219-esp32-reg.yaml ein.
-7. Wichtig: Passe ggf. deine api- und ota-Schlüssel an bzw. überprüfe die Konfiguration.
-8. Optional anpassen: Suche die Zeile entity_id: sensor.aussenthermometer_temperature und trage dort den Namen deines eigenen Temperatursensors aus Home Assistant ein.
-9. Klicke oben rechts auf Speichern und anschließend auf Schließen
+### 1. Install the Fonts
 
-### 4. Firmware installieren / flashen
+Download `basis33.ttf` and `pixelmix.ttf` from the [`fonts/`](./fonts/) directory and copy them to `/config/esphome/fonts/` in your Home Assistant filesystem. You can use the File Editor, Studio Code Server, or Samba Share add-on to copy the files.
 
-1. Klicke bei der neuen Gerätekarte auf das Drei-Punkte-Menü ⋮ Installieren.
-2. Wähle die gewünschte Installationsmethode:
-3. An diesen Computer angeschlossen: Für die Erstinstallation bequem per USB-Kabel direkt über den Browser flashen. [![web.esphome.io](https://shields.io)](https://web.esphome.io/)
-5. Im Netzwerk (OTA): Für alle späteren Updates kabellos über WLAN.
+### 2. Set Up Wi-Fi and Credentials
+
+1. Open the **ESPHome dashboard** in Home Assistant.
+2. Open the three-dot menu **⋮** at the top right and select **Secrets**.
+3. Store your Wi-Fi credentials in `secrets.yaml`:
+
+    ```yaml
+    wifi_ssid: "YourWiFiName"
+    wifi_password: "YourWiFiPassword"
+    ```
+
+The supplied firmware YAML currently uses inline placeholders. To use the Wi-Fi secrets above, replace its `wifi.ssid` and `wifi.password` values with:
+
+```yaml
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+```
+
+The file [`secrets.example.yaml`](./secrets.example.yaml) contains example ESPHome configuration sections with placeholder credentials. It is a configuration reference; the entries shown in the first example above are the key/value format used by `secrets.yaml`.
+
+### 3. Create the Device and Paste the YAML
+
+1. In the ESPHome dashboard, click **+ New Device** or **Create Device**.
+2. Click **Continue** and enter the device name exactly as `max7219-esp32-reg`. The [original setup screenshot](<Konfiguration erstellen ESPHome Builder – Home Assistant.png>) shows this step in German.
+3. Select **ESP32** as the platform.
+4. Complete the wizard using **Skip** or **Finish**, as appropriate.
+5. Find the new device card and click **Edit**.
+6. Replace the generated configuration with the complete contents of [`max7219-esp32-reg.yaml`](./max7219-esp32-reg.yaml).
+7. Replace `DEIN_API_KEY` with your valid ESPHome API encryption key and `DEIN_OTA_PASSWORT` with your OTA password. Set the Wi-Fi credentials directly or use the `!secret` references described above, and choose a secure fallback hotspot password under `wifi.ap.password`.
+8. Find `entity_id: sensor.aussenthermometer_temperature` and replace the entity ID with your own Home Assistant temperature sensor.
+9. Review the configuration, then click **Save** and **Close**.
+
+The original configuration uses the `Europe/Berlin` time zone and German weekday abbreviations (`SO`, `MO`, `DI`, `MI`, `DO`, `FR`, `SA`). Change the `time.timezone` value if needed for your location; the documentation translation retains these original firmware defaults.
+
+### 4. Install the Firmware
+
+Open the new device card's three-dot menu **⋮** and select **Install**. Choose **Plug into this computer** for the first installation over USB, or **Wirelessly** / **Over the air (OTA)** for later updates over Wi-Fi.
+
+For browser-based USB flashing, use [ESPHome Web](https://web.esphome.io/).

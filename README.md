@@ -71,6 +71,7 @@ Lade die beiden Schriftdateien aus dem Ordner [`/fonts`](./fonts) herunter und l
 2. Wähle die gewünschte Installationsmethode:
 3. An diesen Computer angeschlossen: Für die Erstinstallation bequem per USB-Kabel direkt über den Browser flashen. [![web.esphome.io](https://shields.io)](https://web.esphome.io/)
 5. Im Netzwerk (OTA): Für alle späteren Updates kabellos über WLAN.
+---
 
 <details>
 <summary>🇬🇧 English Version (Click to expand)</summary>
@@ -295,4 +296,5 @@ wifi_password: "YourWLANPasswort"
 2. Select the desired installation method:
 3. Connected to this computer: For the initial installation, flash conveniently via USB cable directly via the browser. [! [web.esphome.io] (https://shields.io)] (https://web.esphome.io/)
 5. On the network (OTA): For all subsequent updates, wirelessly via Wi-Fi.
+
 </details>

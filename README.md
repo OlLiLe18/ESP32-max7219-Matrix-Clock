@@ -223,7 +223,7 @@ wifi_password: "YourWLANPasswort"
 3. Connected to this computer: For the initial installation, flash conveniently via USB cable directly via the browser. [! [web.esphome.io] (https://shields.io)] (https://web.esphome.io/)
 5. On the network (OTA): For all subsequent updates, wirelessly via Wi-Fi.
 
-6. <details>
+<details>
 <summary>🇬🇧 Deutsche Version (Click to expand)</summary>
 🕒 #ESP32 MAX7219 Smart Matrix Clock (96x8 pixels)
 

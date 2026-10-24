@@ -4,6 +4,8 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 
 ---
 <img width="1195" height="896" alt="Clock max7219 (1)" src="https://github.com/user-attachments/assets/46acfe09-3d6f-4676-9f4f-9e3fb7cb2ba8" />
+---
+![Smarte ESP32 Matrix Uhr]( images/MAX7219 Smart Matrix Clock (1).jpg)
 
 ## ✨ Features
 

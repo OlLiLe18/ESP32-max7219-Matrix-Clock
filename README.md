@@ -21,6 +21,9 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 - 📜 **Lauftext-Modus:** Scroll-, Bounce- und Wipe-Animationen für individuelle Nachrichten aus Home Assistant
 
 ---
+## Produkt 
+Punktmatrixanzeige MAX7219 Direkt Link: https://de.aliexpress.com/item/1005009023514906.html?channel=twinner 
+ESP32 Entwicklungsboard: https://de.aliexpress.com/item/1005007820190456.html?channel=twinner 
 
 ## 🔌 Hardware & Pinbelegung (ESP32)
 

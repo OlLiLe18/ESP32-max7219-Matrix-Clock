@@ -21,9 +21,9 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 - 📜 **Lauftext-Modus:** Scroll-, Bounce- und Wipe-Animationen für individuelle Nachrichten aus Home Assistant
 
 ---
-### Produkt Direkt Link
-* **Punktmatrixanzeige MAX7219:** https://de.aliexpress.com/item/1005009023514906.html?channel=twinner 
-* **ESP32 Entwicklungsboard:** https://de.aliexpress.com/item/1005007820190456.html?channel=twinner 
+### Produkt-Links
+* **Punktmatrixanzeige MAX7219:** [Direkt-Link zu AliExpress](https://de.aliexpress.com/item/1005009023514906.html?channel=twinner)
+* **ESP32 Entwicklungsboard:** [Direkt-Link zu AliExpress]( https://de.aliexpress.com/item/1005007820190456.html?channel=twinner)
 
 
 ## 🔌 Hardware & Pinbelegung (ESP32)
@@ -101,9 +101,9 @@ A smart 96x8 LED matrix clock based on an ESP32 and ESPHome, fully integrated wi
 - 📜 **Scrolling text mode:** Scroll, bounce and wipe animations for individual messages from Home Assistant
 
 ---
-### Product Direct Link
-* **Dot matrix display MAX7219:** https://de.aliexpress.com/item/1005009023514906.html?channel=twinner 
-* **ESP32 Development Board:** https://de.aliexpress.com/item/1005007820190456.html?channel=twinner
+### Product-Link
+* **Dot matrix display MAX7219:** [Direkt-Link zu AliExpress](https://de.aliexpress.com/item/1005009023514906.html?channel=twinner)
+* **ESP32 Development Board:** [Direkt-Link zu AliExpress]( https://de.aliexpress.com/item/1005007820190456.html?channel=twinner)
   
 ## 🔌 Hardware & Pining (ESP32)
 

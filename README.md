@@ -22,8 +22,8 @@ Eine smarte 96x8 LED-Matrix-Uhr basierend auf einem ESP32 und ESPHome, vollstän
 
 ---
 ### Produkt 
-Punktmatrixanzeige MAX7219 Direkt Link:** https://de.aliexpress.com/item/1005009023514906.html?channel=twinner 
-ESP32 Entwicklungsboard:** https://de.aliexpress.com/item/1005007820190456.html?channel=twinner 
+* **Punktmatrixanzeige MAX7219 Direkt Link:** https://de.aliexpress.com/item/1005009023514906.html?channel=twinner 
+* **ESP32 Entwicklungsboard:** https://de.aliexpress.com/item/1005007820190456.html?channel=twinner 
 ### Produkt
 * **Punktmatrixanzeige MAX7219:** [Direkt-Link zu AliExpress](https://de.aliexpress.com/item/1005009023514906.html?channel=twinner)
 * **ESP32 Entwicklungsboard:** [Direkt-Link zu AliExpress](https://de.aliexpress.com/item/1005007820190456.html?channel=twinner)
